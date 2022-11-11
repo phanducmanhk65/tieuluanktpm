@@ -116,20 +116,20 @@ app.post('/api/user', (req, res) => {
 	return res.json(users[users.length - 1]);
 })
 
-app.delete('/api/user', (req, res) => {
-	var id = req.body.id;
-	if(id.undefined)
-		return res.json({message: "Can dien ID nguoi dung"});
-		var count = 0;
-	id.map((value, index, array) => {
-		for(var i = 0; i < users.length; i++){
-			if(users[i].id == value){
-				users.splice(i, 1); 
-				count++;
-			}
-		}
-	})
-	return res.json({message: "Delete success " + count + " uses"});
+app.delete('/api/user/:id', (req, res) => {
+	const {id} = req.params;
+	const deleted = users.find(user => user.id === id )
+	var x = 100;
+	for(i = 0; i< users.length;i++) {
+		if (users[i] === deleted)
+		 x = i;
+	}
+	if(deleted) {
+		users.splice(x,1)
+		return res.json({message: "Xoa thanh cong"});
+	} else {
+		return res.json({message: "User khong ton tai"});
+	}
 })
 
 app.put('/api/user', (req, res) => {
